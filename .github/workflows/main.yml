@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18, 16, 14, 12, 10]
+        node-version: [16]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -25,6 +25,7 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**pnpm-lock.yaml') }}
       - run: echo '${{ toJSON(steps.node_modules_cache_id.outputs) }}'
+      - run: npm install -g pnpm
       - if: ${{ steps.node_modules_cache_id.outputs.cache-hit != 'true' }}
         run: pnpm install
       - run: pnpm run test
